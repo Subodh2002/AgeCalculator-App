@@ -55,6 +55,7 @@ submit_button.addEventListener("click", CalculateDate)
 
 //!for day input
 input_day.addEventListener("input", (d)=>{
+    const lastDayOfMonth = new Date(+input_year.value, +input_month.value, 0).getDate();
 
     if(+input_day.value > 31){
         error_day.textContent="Must be a valid day";
@@ -66,47 +67,86 @@ input_day.addEventListener("input", (d)=>{
         error_day.textContent="";
         day_input_error();
     }
-    if(+input_day.value<1)
+
+    if(+input_day.value<1 || +input_day.value==="")
     {
         error_day.textContent="Must be a valid day";
         day_input_error(1);
         isValid=false;
+        return
+    } 
+    if(+input_day.value > lastDayOfMonth)
+    {
+        error_day.textContent="Must be a valid date";
+        day_input_error(1);
+        isValid=false;
+        error_month.textContent="Must be a valid date";
+        month_input_error(1);
+        isValid = false;
+        error_year.textContent="Must be a valid date";
+        year_input_error(1);
+        isValid=false;
     }
-
+    else {
+        isValid = true;
+        error_month.textContent="";
+        error_day.textContent="";
+        error_year.textContent="";
+        day_input_error();
+        month_input_error();
+        year_input_error();
+    }
 });
 
 //!for month input
 input_month.addEventListener("input", ()=>{
     const lastDayOfMonth = new Date(+input_year.value, +input_month.value, 0).getDate();
 
-    
     if(+input_month.value > 12 || +input_month.value<1){
         error_month.textContent="Must be a valid month";
         month_input_error(1);
         isValid = false;
+        return
     }
     else{
         error_month.textContent="";
         month_input_error();
         isValid = true;
     }
+
+    if(+input_day.value<1 || +input_day.value=="")
+    {
+        error_day.textContent="Must be a valid day";
+        day_input_error(1);
+        isValid=false;
+        return
+    }
+    else {
+        isValid = true;
+        error_day.textContent="";
+        day_input_error();
+    }
     if(+input_day.value > lastDayOfMonth)
     {
         error_day.textContent="Must be a valid date";
         day_input_error(1);
         isValid=false;
-        error_month.textContent="Must be a valid month";
+        error_month.textContent="Must be a valid date";
         month_input_error(1);
         isValid = false;
+        error_year.textContent="Must be a valid date";
+        year_input_error(1);
+        isValid=false;
     }
     else {
         isValid = true;
         error_month.textContent="";
         error_day.textContent="";
+        error_year.textContent="";
         day_input_error();
         month_input_error();
+        year_input_error();
     }
-
 });
 
 //!for year input
@@ -118,8 +158,13 @@ input_year.addEventListener("input", (d)=>{
 
     if(+input_year.value > crnYear ){
         error_year.textContent="Date cannot be future";
+        error_month.textContent="Date cannot be future";
+        error_day.textContent="Date cannot be future";
+        day_input_error(1);
+        month_input_error(1);
         year_input_error(1);
         isValid = false;
+        return
     }
     else {
         isValid = true;
@@ -157,6 +202,7 @@ input_year.addEventListener("input", (d)=>{
         day_input_error();
         month_input_error();
         year_input_error();
+        isValid=true;
     }
     
 
